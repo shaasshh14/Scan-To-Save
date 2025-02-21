@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, send_file
+from flask_pwa import PWA
 import sqlite3
 import qrcode
 import io
@@ -7,6 +8,15 @@ import secrets
 from datetime import datetime
 
 app = Flask(__name__)
+
+app.config['PWA_APP_NAME'] = "Emergency QR"
+app.config['PWA_APP_DESCRIPTION'] = "Offline support for emergency QR code details"
+app.config['PWA_APP_THEME_COLOR'] = "#ffffff"
+app.config['PWA_APP_BACKGROUND_COLOR'] = "#000000"
+app.config['PWA_APP_DISPLAY'] = "standalone"
+app.config['PWA_APP_SCOPE'] = "/"
+app.config['PWA_APP_START_URL'] = "/"
+pwa = PWA(app)
 
 def init_db():
     """Initialize the SQLite database and create tables if they don't exist"""
@@ -43,6 +53,11 @@ with app.app_context():
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@app.route('/service-worker.js')
+def service_worker():
+    return app.send_static_file('service-worker.js')
+
 
 @app.route('/select_template/<template_name>')
 def select_template(template_name):

@@ -181,5 +181,21 @@ SafeLINK is particularly useful for scenarios like emergency identification, sha
             </div>
         </div>
     </footer>
+    
+    <!-- Add the Service Worker Registration Script before closing body tag -->
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/static/service-worker.js')
+                    .then((registration) => {
+                        console.log('Service Worker registered with scope:', registration.scope);
+                    })
+                    .catch((error) => {
+                        console.log('Service Worker registration failed:', error);
+                    });
+            });
+        }
+    </script>
 </body>
 </html>
