@@ -209,7 +209,12 @@
                     <button class="button button-secondary">View safeLINK</button>
                 </a>
             </div>
-            
+            <!-- Emergency Button -->
+            <div style="margin-top: 1rem;">
+                <button class="button button-primary" style="background-color: red;" onclick="findNearbyHospitals()">
+                    🚑 Emergency - Find Nearby Hospitals
+                </button>
+            </div>
         </div>
     </main>
 
@@ -218,5 +223,30 @@
             <p>&copy; 2024 safeLINK. All rights reserved.</p>
         </div>
     </footer>
+
+    <script>
+        function callEmergencyContact() {
+            var contact = "{{ profile.emergency_contact }}";
+            if (contact) {
+                window.location.href = "tel:+91" + contact;
+            } else {
+                alert("Emergency contact not available.");
+            }
+        }
+        function findNearbyHospitals() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                var lat = position.coords.latitude;
+                var lon = position.coords.longitude;
+                var googleMapsUrl = `https://www.google.com/maps/search/hospitals/@${lat},${lon},14z`;
+                window.open(googleMapsUrl, '_blank');
+            }, function(error) {
+                alert("Location access denied or unavailable. Please enable location services.");
+            });
+        } else {
+            alert("Geolocation is not supported by this browser.");
+        }
+    }
+    </script>
 </body>
 </html>
