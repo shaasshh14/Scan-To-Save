@@ -1,14 +1,21 @@
-safeLINK is a web-based application designed to assist during emergency situations by providing an accessible way for strangers or bystanders to retrieve someone’s emergency contact information. This system leverages QR codes and NFC technology to bridge communication gaps during critical moments, potentially saving lives.
+Scan-To-Save is a web-based application designed to assist during emergency situations by providing an accessible way for strangers or bystanders to retrieve someone’s emergency contact information. This system leverages QR codes and NFC technology to bridge communication gaps during critical moments, potentially saving lives.
+
+---
+
+## **Hackathon Pitch: Revolutionizing Emergency Response with Scan-To-Save**
+
+### **Problem Statement**
+During emergency situations, individuals may be unable to communicate vital details, leading to delays in medical assistance and contact with their loved ones. Scan-To-Save aims to solve this problem by providing a seamless, technology-driven solution to ensure emergency responders and bystanders can access crucial information instantly.
 
 ---
 
 ## **Use Case: Emergency Situations**
 
-The primary goal of safeLINK is to offer an efficient solution for accessing emergency details in situations such as:
+The primary goal of Scan-To-Save is to offer an efficient solution for accessing emergency details in situations such as:
 
 - **Medical Emergencies:** When a person is unconscious or unable to communicate, bystanders can scan the QR code or use the NFC tag to access emergency contact details and alert family members.
-- **Accidents:** During road accidents or similar events, safeLINK enables immediate access to vital contact information, facilitating timely support and assistance.
-- **Lost Children or Pets:** safeLINK can be used to provide emergency contact details for children in case they are lost or separated from their guardians. Similarly, QR codes or NFC tags can be attached to pets to help locate their owners if they go missing.
+- **Accidents:** During road accidents or similar events, Scan-To-Save enables immediate access to vital contact information, facilitating timely support and assistance.
+- **Lost Children or Pets:** Scan-To-Save can be used to provide emergency contact details for children in case they are lost or separated from their guardians. Similarly, QR codes or NFC tags can be attached to pets to help locate their owners if they go missing.
 
 ---
 
@@ -76,8 +83,8 @@ This ensures that essential information is readily available in high-risk scenar
 1. Clone the repository:
     
     ```bash
-    git clone https://github.com/yeswanth49/safelink.git
-    cd safelink
+    git clone https://github.com/yeswanth49/scantosave.git
+    cd scantosave
     ```
     
 2. Create a virtual environment (optional but recommended):
@@ -116,7 +123,7 @@ This ensures that essential information is readily available in high-risk scenar
 ## **Folder Structure**
 
 ```plaintext
-safelink/
+scantosave/
 ├── static/         # Static files (CSS, JS, images)
 ├── templates/      # HTML templates
 ├── app.py          # Main Flask application
@@ -128,7 +135,7 @@ safelink/
 
 ## **Contributing**
 
-Contributions are welcome! If you have suggestions for new features or improvements, please open an issue or submit a pull request.
+We welcome contributions! If you have innovative ideas or improvements, feel free to open an issue or submit a pull request.
 
 ---
 
@@ -142,5 +149,6 @@ This project is licensed under the MIT License. See the LICENSE file for details
 
 For questions or feedback, feel free to reach out:
 
-- **Email:** [sinchan123v@gmail.com](mailto:sinchan123v@gmail.com)
-- **GitHub:** [yeswanth49](https://github.com/yeswanth49)
+- **Email:** [prashant24816gp@gmail.com](mailto:prashant24816gp@gmail.com)
+- **GitHub:** [Parshuram02](https://github.com/Parshuram02)
+
