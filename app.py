@@ -1,11 +1,32 @@
-from flask import Flask, render_template, request, redirect, url_for, send_file
-from flask_pwa import PWA
+from flask import Flask, render_template, request,jsonify, redirect, url_for, send_file
 import sqlite3
 import qrcode
 import io
 import base64
 import secrets
 from datetime import datetime
+import requests
+from flask import Flask, render_template
+from twilio.rest import Client
+import re
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+
+TWILIO_ACCOUNT_SID = os.getenv("TWILIO_ACCOUNT_SID")
+TWILIO_AUTH_TOKEN = os.getenv("TWILIO_AUTH_TOKEN")
+TWILIO_PHONE_NUMBER = os.getenv("TWILIO_PHONE_NUMBER")
+
+# from flask import Flask, render_template, request, jsonify
+# import sqlite3
+# import qrcode
+# import io
+# import base64
+# import secrets
+
+# from flask_pwa import PWA
 
 app = Flask(__name__)
 
@@ -16,7 +37,10 @@ app.config['PWA_APP_BACKGROUND_COLOR'] = "#000000"
 app.config['PWA_APP_DISPLAY'] = "standalone"
 app.config['PWA_APP_SCOPE'] = "/"
 app.config['PWA_APP_START_URL'] = "/"
-pwa = PWA(app)
+#pwa = PWA(app)
+
+
+
 
 def init_db():
     """Initialize the SQLite database and create tables if they don't exist"""
@@ -254,6 +278,60 @@ def verify_password(profile_id):
         return {"valid": is_valid}
     finally:
         conn.close()
+
+client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
+
+
+def is_valid_phone_number(phone_number):
+    """Validate phone number format (E.164)"""
+    pattern = r"^\+\d{10,15}$"
+    return bool(re.match(pattern, phone_number))
+
+def send_sms(emergency_contact, location_link):
+    """Send emergency SMS with live location"""
+    try:
+        # Validate phone number format
+        if not is_valid_phone_number(emergency_contact):
+            print(f"❌ Invalid Phone Number: {emergency_contact}")
+            return 400  # Bad request
+
+        message = client.messages.create(
+            body=f"🚨 Emergency Alert! Live Location: {location_link}",
+            from_=TWILIO_PHONE_NUMBER,
+            to=emergency_contact
+        )
+        print(f"✅ SMS Sent! Message SID: {message.sid}")
+        return 200  # Success
+    except Exception as e:
+        print(f"❌ Error sending SMS: {e}")
+        return 500  # Failure
+
+@app.route('/send_emergency', methods=['POST'])
+def send_emergency():
+    data = request.json
+    latitude = data.get("latitude")
+    longitude = data.get("longitude")
+    emergency_contact = data.get("emergency_contact")
+
+    if not latitude or not longitude or not emergency_contact:
+        return jsonify({"error": "Missing data"}), 400
+
+    # Ensure phone number is valid
+    if not is_valid_phone_number(emergency_contact):
+        return jsonify({"error": "Invalid phone number format"}), 400
+
+    # Generate Google Maps Link
+    location_link = f"https://www.google.com/maps?q={latitude},{longitude}"
+
+    # Send SMS
+    status = send_sms(emergency_contact, location_link)
+    if status == 200:
+        return jsonify({"message": "Emergency message sent!"}), 200
+    else:
+        return jsonify({"error": "Failed to send message"}), 500
+
+
         
 if __name__ == '__main__':
     app.run(debug=True)
+

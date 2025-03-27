@@ -202,8 +202,7 @@
             </div>
 
             <div class="button-group">
-                <a href="tel:+91{{ profile.emergency_contact }}">
-                    <button class="button button-primary">Call Emergency Contact</button>
+                    <button onclick="sendEmergencyAlert()" class="button button-primary">Send Emergency Alert</button>
                 </a>
                 
             </div>
@@ -245,6 +244,37 @@
             alert("Geolocation is not supported by this browser.");
         }
     }
+
+    </script>
+    <!-- <h1>Emergency Live Location</h1>
+    <button onclick="sendEmergencyAlert()">🚨 Send Emergency Alert</button> -->
+    
+    <script>
+        function sendEmergencyAlert() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    var contact = "{{ profile.emergency_contact }}";
+                    const latitude = position.coords.latitude;
+                    const longitude = position.coords.longitude;
+                    const emergencyContact = "+91" + contact; // Replace with actual emergency contact
+    
+                    fetch("/send_emergency", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ latitude, longitude, emergency_contact: emergencyContact }),
+                    })
+                    .then(response => response.json())
+                    .then(data => alert(data.message || data.error))
+                    .catch(error => console.error("Error:", error));
+                }, function(error) {
+                    alert("Error getting location: " + error.message);
+                });
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
     </script>
 </body>
 </html>
